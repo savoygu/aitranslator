@@ -32,6 +32,10 @@
       ]
     }
   },
+  "bin": {
+    "aitranslator": "./bin/aitranslator.mjs",
+    "ait": "./bin/aitranslator.mjs"
+  },
   "files": [
     "dist"
   ],
