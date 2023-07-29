@@ -1,0 +1,21 @@
+{
+  "cSpell.words": [
+    "aitranslator",
+    "bumpp",
+    "changelogithub",
+    "esno"
+  ],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "vue",
+    "html",
+    "json",
+    "jsonc",
+    "json5",
+    "markdown"
+  ]
+}
