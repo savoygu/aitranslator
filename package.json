@@ -1,18 +1,17 @@
 {
-  "name": "pkg-name",
+  "name": "aitranslator",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@8.6.10",
   "description": "",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "author": "savoygu<1029559886@qq.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/pkg-name#readme",
+  "homepage": "https://github.com/savoygu/aitranslator#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/pkg-name.git"
+    "url": "git+https://github.com/savoygu/aitranslator.git"
   },
-  "bugs": "https://github.com/antfu/pkg-name/issues",
+  "bugs": "https://github.com/savoygu/aitranslator/issues",
   "keywords": [],
   "sideEffects": false,
   "exports": {
