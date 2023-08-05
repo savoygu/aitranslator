@@ -3,6 +3,7 @@
     "aitranslator",
     "bumpp",
     "changelogithub",
+    "citty",
     "esno"
   ],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
