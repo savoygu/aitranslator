@@ -5,15 +5,9 @@ import { ChatGPTAPI, ChatGPTError } from 'chatgpt'
 import type { FetchOptions, FetchRequest } from 'ohmyfetch'
 import { fetch } from 'ohmyfetch'
 import ISO6391 from 'iso-639-1'
-import type { TranslatorCLIOptions } from '../commands/aitranslator.js'
 import type { ValidConfig } from './config.js'
-import { KnownError } from './error.js'
-import cache from './cache.js'
-
-export interface CreateChatCompletionOptions {
-  words: string[]
-  options: ValidConfig & Omit<TranslatorCLIOptions, '--'>
-}
+import cache from './conversation.js'
+import type { TranslatorOptions } from './translator.js'
 
 export interface _Conversation {
   lastMessageId?: string
@@ -23,7 +17,7 @@ export type Conversation = _Conversation & {
   [messageId: string]: ChatMessage | undefined
 }
 
-export async function createChatCompletion({ words, options }: CreateChatCompletionOptions) {
+export async function createChatCompletion(words: string[], options: ValidConfig & Omit<TranslatorOptions, '--'>) {
   const apiKeyHash = hash(options.apiKey)
   const conversationName = options.conversationName ?? 'default'
   const conversationKey = `${conversationName}:${apiKeyHash}`
@@ -94,22 +88,19 @@ export async function createChatCompletion({ words, options }: CreateChatComplet
   }
   catch (error: any) {
     if (error.name === 'TimeoutError' || error.cause?.code === 'UND_ERR_CONNECT_TIMEOUT')
-      throw new KnownError(`Time out error: request took over ${options.timeout}ms. Try increasing the \`timeout\` config, or checking the OpenAI API status https://status.openai.com`)
+      throw new Error(`Time out error: request took over ${options.timeout}ms. Try increasing the \`timeout\` config, or checking the OpenAI API status https://status.openai.com`)
 
     if (error.cause?.code === 'ENOTFOUND')
-      throw new KnownError(`Error connecting to ${options.hostname} (${error.cause.syscall}). Are you connected to the internet?`)
+      throw new Error(`Error connecting to ${options.hostname} (${error.cause.syscall}). Are you connected to the internet?`)
 
     if (error instanceof ChatGPTError) {
       const matched = error.message.match(/({\s*"error":\s*{[\s\S]+?}\s*})/)
       if (matched) {
         try {
           const reason = JSON.parse(matched[1])
-          throw new KnownError(reason.error.message)
+          throw new Error(reason.error)
         }
-        catch (error) {
-          if (error instanceof KnownError)
-            throw error
-        }
+        catch {}
       }
     }
 
