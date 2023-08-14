@@ -27,3 +27,9 @@ jobs:
       - run: npx changelogithub --no-group
         env:
           GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+
+      - run: pnpm run publish:ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true
+          NODE_OPTIONS: --max-old-space-size=6144

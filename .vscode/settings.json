@@ -8,6 +8,7 @@
     "changelogithub",
     "citty",
     "esno",
+    "execa",
     "ohmyfetch"
   ],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",

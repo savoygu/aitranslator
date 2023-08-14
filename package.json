@@ -46,6 +46,7 @@
     "lint": "eslint .",
     "release": "bumpp --execute=\"nr build\" --no-push",
     "release:prepare": "nr build",
+    "publish:ci": "esno scripts/publish.ts",
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
@@ -65,6 +66,7 @@
     "conf": "^11.0.2",
     "eslint": "^8.45.0",
     "esno": "^0.17.0",
+    "execa": "^7.2.0",
     "gradient-string": "^2.0.2",
     "https-proxy-agent": "^7.0.1",
     "iso-639-1": "^2.1.15",
