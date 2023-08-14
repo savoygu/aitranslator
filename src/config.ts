@@ -12,6 +12,8 @@ export interface ConfigOptions {
   apiOrg?: string
   proxy?: string
   timeout?: string
+  style?: string // simple or detailed
+  prompt?: string
 }
 
 export function config(mode: string, keyValues: [string, string | number][]) {
@@ -105,6 +107,18 @@ export const configParser = {
     parseAssert('timeout', parsed >= 500, 'Must be greater than 500ms')
 
     return parsed
+  },
+  style(style?: string) {
+    if (!style)
+      return 'simple'
+
+    parseAssert('style', ['simple', 'detailed'].includes(style), 'Must be simple or detailed')
+
+    return style
+  },
+  prompt(prompt?: string) {
+    // TODO
+    return prompt
   },
 } as const
 

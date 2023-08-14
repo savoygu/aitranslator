@@ -5,6 +5,7 @@ import { ChatGPTAPI, ChatGPTError } from 'chatgpt'
 import type { FetchOptions, FetchRequest } from 'ohmyfetch'
 import { fetch } from 'ohmyfetch'
 import ISO6391 from 'iso-639-1'
+import { bgYellow, yellow } from 'kolorist'
 import type { ValidConfig } from './config.js'
 import cache from './conversation.js'
 import type { TranslatorOptions } from './translator.js'
@@ -37,7 +38,7 @@ export async function createChatCompletion(words: string[], options: ValidConfig
   }
 
   if (options.debug)
-    console.log('using cache', cache.path)
+    console.log(bgYellow(' using cache '), yellow(cache.path), '\n')
 
   try {
     const api = new ChatGPTAPI({
@@ -71,7 +72,9 @@ export async function createChatCompletion(words: string[], options: ValidConfig
     const result = await api.sendMessage(words.join(' '), {
       conversationId,
       parentMessageId,
-      systemMessage: `假设你是一本牛津高阶万能词典，请以 ${ISO6391.getName(options.locale)} 为翻译目标，给出这个词的翻译、音标或拼音、${words.length === 1 ? '所有词性及其对应的翻译、同义词和近义词、' : ''}并提供相关例句`,
+      systemMessage: options.prompt || (options.style === 'detailed'
+        ? `Now that you are a language translator, please translate what I have typed into ${ISO6391.getName(options.locale)}. Also give the phonetic symbols or pinyin of the words, and relevant example sentences.`
+        : `Translate the given content into ${ISO6391.getName(options.locale)}.`),
       timeoutMs: options.timeout,
       onProgress: options.stream
         ? (progress) => {

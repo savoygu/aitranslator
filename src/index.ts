@@ -14,6 +14,8 @@ cli.command('[...words]', 'words to be translated')
   .option('-n, --conversationName <conversationName>', '[string] unique name for the conversation')
   .option('-l, --locale <locale>', '[string] location (default: en)')
   .option('-m, --model <model>', '[string] openai model (default: gpt-3.5-turbo)')
+  .option('-t, --style [style]', '[string] simple | detailed, prompt style (default: simple)')
+  .option('-p, --prompt [prompt]', '[string] custom prompt')
   .action(async (words: string[], options: TranslatorOptions) => {
     if (!words.length) {
       console.error(`${red('✖')} Please provide words to be translated\n`)
@@ -33,6 +35,8 @@ cli.command('config [mode] [...key=value]', '[string] set | get, set or get conf
   .option('--api-org [apiOrg]', '[string] openai api organization')
   .option('--proxy [proxy]', '[string] web request proxy')
   .option('--timeout [timeout]', '[number] request timeout (default: 10_000)')
+  .option('--style [style]', '[string] simple | detailed, prompt style (default: simple)')
+  .option('--prompt [prompt]', '[string] custom prompt')
   .action(async (mode: string, keyValue: string[], options: ConfigOptions) => {
     if (!mode) {
       const { translator } = await import('./translator.js')

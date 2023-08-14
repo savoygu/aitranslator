@@ -21,6 +21,10 @@ export interface TranslatorOptions {
   locale?: string
   m?: string
   model?: string
+  t?: string
+  style?: string
+  p?: string
+  prompt?: string
 }
 
 export function translator(words: string[], inlineConfig: TranslatorOptions = {}) {
