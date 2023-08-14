@@ -1,10 +1,14 @@
 {
   "cSpell.words": [
+    "aicache",
+    "aiconfig",
     "aitranslator",
+    "aitranslatorrc",
     "bumpp",
     "changelogithub",
     "citty",
-    "esno"
+    "esno",
+    "ohmyfetch"
   ],
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "eslint.validate": [
