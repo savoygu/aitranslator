@@ -37,6 +37,7 @@
     "ait": "./bin/aitranslator.mjs"
   },
   "files": [
+    "bin",
     "dist"
   ],
   "scripts": {
