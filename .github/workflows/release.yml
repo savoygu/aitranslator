@@ -24,6 +24,6 @@ jobs:
         with:
           node-version: 18.x
 
-      - run: npx changelogithub
+      - run: npx changelogithub --no-group
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
