@@ -1,0 +1,13 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 8bf72c9a527a47294b848619fa602001ccfad9d6..036b53dd79d465872edcaa81548b04abde578656 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -38,7 +38,7 @@ function parse(contents, options = {}) {
+       continue;
+     }
+     const value = destr__default(
+-      match[2].trim()
++      (match[2] || '').trim()
+       /* val */
+     );
+     if (key.endsWith("[]")) {
