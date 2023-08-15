@@ -6,6 +6,7 @@ import type { FetchOptions, FetchRequest } from 'ohmyfetch'
 import { fetch } from 'ohmyfetch'
 import ISO6391 from 'iso-639-1'
 import { bgYellow, yellow } from 'kolorist'
+import { isUndefined } from 'lodash-es'
 import type { ValidConfig } from './config.js'
 import conversations from './conversation.js'
 import type { TranslatorOptions } from './translator.js'
@@ -75,8 +76,15 @@ export async function createChatCompletion(words: string[], options: ValidConfig
       timeoutMs: options.timeout,
       onProgress: options.stream
         ? (progress) => {
-            if (progress.delta)
-              process.stdout.write(progress.delta)
+            if (!progress.text)
+              process.stdout.write('\n    ')
+            if (progress.delta) {
+              const indent = progress.delta.endsWith('\n')
+              process.stdout.write(progress.delta + (indent ? '    ' : ''))
+            }
+            else if (isUndefined(progress.delta)) {
+              process.stdout.write('\n')
+            }
           }
         : undefined,
     })
