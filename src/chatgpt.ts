@@ -7,7 +7,7 @@ import { fetch } from 'ohmyfetch'
 import ISO6391 from 'iso-639-1'
 import { bgYellow, yellow } from 'kolorist'
 import type { ValidConfig } from './config.js'
-import cache from './conversation.js'
+import conversations from './conversation.js'
 import type { TranslatorOptions } from './translator.js'
 
 export interface _Conversation {
@@ -19,13 +19,10 @@ export type Conversation = _Conversation & {
 }
 
 export async function createChatCompletion(words: string[], options: ValidConfig & Omit<TranslatorOptions, '--'>) {
-  const apiKeyHash = hash(options.apiKey)
-  const conversationName = options.conversationName ?? 'default'
-  const conversationKey = `${conversationName}:${apiKeyHash}`
-  const conversation
-        = (options.continue && options.store
-          ? cache.get(conversationKey, {})
-          : {}) as Conversation
+  const conversationKey = `${options.conversationName ?? 'default'}:${hash(options.apiKey)}`
+  const conversation = options.continue && options.store
+    ? conversations.get(conversationKey, {})
+    : {}
 
   let conversationId: string | undefined
   let parentMessageId: string | undefined
@@ -38,7 +35,7 @@ export async function createChatCompletion(words: string[], options: ValidConfig
   }
 
   if (options.debug)
-    console.log(bgYellow(' using cache '), yellow(cache.path), '\n')
+    console.log('\n', bgYellow(' using conversations '), yellow(conversations.path), '\n')
 
   try {
     const api = new ChatGPTAPI({
@@ -64,17 +61,17 @@ export async function createChatCompletion(words: string[], options: ValidConfig
         if (options.store) {
           conversation[message.id] = message
           conversation.lastMessageId = message.id
-          cache.set(conversationKey, conversation)
+          // save to local
+          conversations.set(conversationKey, conversation)
         }
       },
     })
 
+    const language = ISO6391.getName(options.locale)
     const result = await api.sendMessage(words.join(' '), {
       conversationId,
       parentMessageId,
-      systemMessage: options.prompt || (options.style === 'detailed'
-        ? `Now that you are a language translator, please translate what I have typed into ${ISO6391.getName(options.locale)}. Also give the phonetic symbols or pinyin of the words, and relevant example sentences.`
-        : `Translate the given content into ${ISO6391.getName(options.locale)}.`),
+      systemMessage: options.prompt?.replace(/\$locale\$/ig, language) || `Translate the following words, The output is in ${language}.`,
       timeoutMs: options.timeout,
       onProgress: options.stream
         ? (progress) => {

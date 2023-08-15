@@ -108,14 +108,6 @@ export const configParser = {
 
     return parsed
   },
-  style(style?: string) {
-    if (!style)
-      return 'simple'
-
-    parseAssert('style', ['simple', 'detailed'].includes(style), 'Must be simple or detailed')
-
-    return style
-  },
   prompt(prompt?: string) {
     // TODO
     return prompt

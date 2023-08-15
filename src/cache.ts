@@ -1,15 +1,15 @@
 import { red } from 'kolorist'
-import conversation from './conversation.js'
+import conversations from './conversation.js'
 
 export function cache(mode: string) {
   return (async () => {
     if (mode === 'rm') {
-      conversation.clear()
-      console.log(`${red('✔')} cleared cache`, conversation.path)
+      conversations.clear()
+      console.log(`${red('✔')} cleared cache`, conversations.path)
     }
 
     if (mode === 'ls') {
-      console.log(conversation.path)
+      console.log(conversations.path)
       return
     }
 

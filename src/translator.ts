@@ -21,8 +21,6 @@ export interface TranslatorOptions {
   locale?: string
   m?: string
   model?: string
-  t?: string
-  style?: string
   p?: string
   prompt?: string
 }
@@ -44,12 +42,12 @@ export function translator(words: string[], inlineConfig: TranslatorOptions = {}
       const s = spinner()
       s.start('The AI is translating your words')
 
-      let result: string[]
+      let result: string[] = []
       try {
         result = await createChatCompletion(words, { ...globalConfig, ...omit(inlineConfig, ['--']) })
       }
       finally {
-        s.stop('Words translated')
+        s.stop(result.length ? 'Words translated' : 'Words not translated')
       }
 
       if (result.length === 0)
